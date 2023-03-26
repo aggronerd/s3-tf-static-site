@@ -4,6 +4,8 @@ This is a very quick example of how to get a static website up and running using
 Service (S3). This is useful if you just want to get a website serving static HTML without much of the cost and fuss, 
 but are **not** concerned with custom domains, security, dynamic server-side rendering or advanced routing.
 
+[Here is an example of this site](http://aggronerds-site.s3-website-ap-southeast-2.amazonaws.com/)!
+
 ## Why?
 
 ### Pros
