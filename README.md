@@ -12,15 +12,16 @@ but are **not** concerned with custom domains, security, dynamic server-side ren
   [SLAs provided by Amazon](https://aws.amazon.com/s3/sla/)
 
 ### Cons
-* **No HTTPS** out-of-the-box (need to use Cloudfront or Cloudflare in front of it for example)
-* Getting a custom domain requires more work. This will give you a custom sub-domain.
-* Won't support dynamic server side rendered sites (PHP, Ruby, Python, Go etc.)
+* **No HTTPS** out-of-the-box (need to use Cloudfront or Cloudflare in front of it, for example)
+* Getting a custom domain requires more work. Currently, you get a custom sub-domain.
+* Won't support dynamic server-side rendered sites (PHP, Ruby, Python, Go etc.)
 
 ## Usage
 
 ### Prerequisites
 
-1. **Checkout this code** checked out to a local folder and put your static site content in the `html/` folder.
+1. **Checkout this code** to a local folder and put your static site content in the `html/` folder or use the example 
+   HTML.
 2. [**Terraform**](https://developer.hashicorp.com/terraform/downloads) downloaded and installed (see the required 
    version in [.terraform_version](./.terraform-version))
 3. **An AWS account**. The best way is to ensure you've installed the [AWS command-line interface (CLI)](https://aws.amazon.com/cli/) and 
@@ -39,6 +40,7 @@ but are **not** concerned with custom domains, security, dynamic server-side ren
     --region ap-southeast-2 \
     --create-bucket-configuration LocationConstraint=ap-southeast-2
    ```
+   The bucket is private by default but the name needs to be globally unique.
 2. When you've created the bucket you will need to set the value of `bucket` in 
    [environments/example/state.tfvars](./environments/example/state.tfvars).
 3. Update the variable `site_name` in [environments/example/variables.tfvars](./environments/example/variables.tfvars)
@@ -52,9 +54,18 @@ Having set up the environment you can now run the Terraform via the Makefile.
    ```bash
    export ENV=example
    ```
-2. Run `make tfinit` to initialise the environment.
-3. Run `make plan` and review the output, these are the change that will be performed on your AWS account.
-4. If you're happy with the "plan" run `make apply` to create the environment.
+2. Run the following to initialise the environment:
+   ```bash
+   make tfinit
+   ```
+3. Run the following and review the output, these are the change that will be performed on your AWS account.
+   ```bash
+   make plan
+   ```
+4. If you're happy with the "plan" run the following to create the environment:
+   ```bash
+   make apply
+   ```
 5. The output of the changes includes the URL for the new environment, you can fetch it directly by running:
    ```bash
    terraform output website_url
@@ -64,18 +75,29 @@ Having set up the environment you can now run the Terraform via the Makefile.
 Since this uploads the files for the site you can continue to make changes within this repository and run `plan` and 
 `apply` to push changes to the site. It's not a conventional workflow for website design, you might opt instead to
 upload files to the S3 bucket via a CI pipeline job and the `aws s3` CLI interface. In which case you may want to
-empty the `html` folder.
+empty the `html` folder as changes to those files are tracked by Terraform.
 
-### Cleanup
+### Cleaning Up
 
-The following will remove all traces of this site
+The following will remove all traces of this site ensuring you have set `ENV` environment variable to the value of the 
+environment you wish to tear-down.
 
-1. Run `make tfinit` to initialise the environment.
-2. Run `make destroy`.
+1. Run the following to initialise the environment:
+   ```bash
+   make tfinit
+   ```
+2. Run the following to destroy all the resources using Terraform:
+   ```bash
+   make destroy
+   ```
+   You will be prompted to type "yes" to confirm you want to destroy the resources
 3. Delete the state S3 bucket defined in the value of `bucket` in the environments `state.tfvar` file, eg.
    [environments/example/state.tfvars](./environments/example/state.tfvars). This can be done via the AWS CLI, eg:
    ```bash
-   
+   aws s3 rm s3://terraform-sandbox-tbzpjfj354dshfpj --recursive
+   aws s3api delete-bucket \
+     --region ap-southeast-2 \
+     --bucket terraform-sandbox-tbzpjfj354dshfpj
    ```
    
 ## Background
