@@ -1,5 +1,6 @@
 body {
     background: aliceblue;
+    font-family: sans-serif;
 }
 
 .standout {
@@ -20,9 +21,12 @@ body {
 }
 
 .faded-note {
+    margin-top: 30pt;
     font-size: smaller;
+    text-align: center;
 }
 
 h1 {
     text-align: center;
+    font-family: serif;
 }
