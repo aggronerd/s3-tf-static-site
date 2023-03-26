@@ -12,9 +12,10 @@ but are **not** concerned with custom domains, security, dynamic server-side ren
   [SLAs provided by Amazon](https://aws.amazon.com/s3/sla/)
 
 ### Cons
-* **No HTTPS** out-of-the-box (need to use Cloudfront or Cloudflare in front of it, for example)
+* **No HTTPS** out-of-the-box (need to use Cloudfront or Cloudflare in front of it, for example).
 * Getting a custom domain requires more work. Currently, you get a custom sub-domain.
 * Won't support dynamic server-side rendered sites (PHP, Ruby, Python, Go etc.)
+* No real monitoring or metrics on how the site is used.
 
 ## Usage
 
@@ -102,7 +103,7 @@ environment you wish to tear-down.
    
 ## Background
 
-### Why this approach
+### Why this Approach?
 
 * S3 is cheap.
 * This is quicker than some alternatives detailed below.
@@ -119,8 +120,22 @@ environment you wish to tear-down.
 ### Alternatives
 
 1. My preferred approach would be a CI pipeline compiling a Docker image for the site. That CI pipeline would trigger 
-   Gitflow processes and push the latest version of the site to a Kubernetes cluster. If it was part of a complex
+   GitOps flow processes and push the latest version of the site to a Kubernetes cluster. If it was part of a complex
    microservices approach I'd opt to use Helm Charts to define the versions of the microservices. This would support
    server-side rendering and would allow anyone to create a site so long as their service listens on port 80, for 
    example. Bonuses:
-   2. 
+   1. Can use cluster ingress such as nginx-ingress or Istio.
+   2. Can use cert manager (LetsEncrypt) for example to quickly set up HTTPS.
+   3. Can integrate metrics and monitoring (Prometheus).
+   4. GitOps flow ensures releases are deployed.
+2. Use a managed service that offers HTTPS and custom domains. GitHub offers GitHub Pages, for example.
+3. Within the AWS eco-system there's Fargate which would allow serverless deployment of a Docker container similar to 
+   (1), you can then use ECR for private container registries, Application Load Balancer (ALB) for providing a
+   HTTPs endpoint on top of which you can implement CloudFront.
+4. Quite simply starting up an EC2 instance running nginx is one option but you've got a bit more to manage in the long
+   run compared to containerised approaches. For example managing the machine image it's running on in terms of
+   libraries and kernel updates to the OS. Between Kubernetes and other proprietary container orchestration you've got
+   easy alternatives.
+
+
+   
