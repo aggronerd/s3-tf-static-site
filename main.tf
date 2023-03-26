@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "main" {
-  bucket = var.site_name
-  tags = var.tags
+  bucket        = var.site_name
+  tags          = var.tags
   force_destroy = var.s3_bucket_force_destroy
 }
 
@@ -24,11 +24,11 @@ resource "aws_s3_bucket_website_configuration" "website" {
 resource "aws_s3_object" "files" {
   for_each = local.files_and_types
 
-  bucket = aws_s3_bucket.main.id
-  key    = each.key
-  content_type = each.value
-  source = "${local.files_root}/${each.key}"
-  etag = filemd5("${local.files_root}/${each.key}")
-  acl = "public-read"
+  bucket             = aws_s3_bucket.main.id
+  key                = each.key
+  content_type       = each.value
+  source             = "${local.files_root}/${each.key}"
+  etag               = filemd5("${local.files_root}/${each.key}")
+  acl                = "public-read"
   bucket_key_enabled = false
 }

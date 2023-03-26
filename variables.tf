@@ -1,5 +1,5 @@
 variable "site_name" {
-  type = string
+  type        = string
   description = "Lower case name for the site"
 
   validation {
@@ -9,13 +9,13 @@ variable "site_name" {
 }
 
 variable "tags" {
-  type = map(string)
-  default = {}
+  type        = map(string)
+  default     = {}
   description = "Some meaningful tags to add to resources created by this configuration"
 }
 
 variable "s3_bucket_force_destroy" {
-  type = bool
-  default = true
+  type        = bool
+  default     = true
   description = "If true will let the bucket be deleted even with the contents, otherwise should be set to false to protect it"
 }
