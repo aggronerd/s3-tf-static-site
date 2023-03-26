@@ -135,7 +135,7 @@ environment you wish to tear-down.
 4. Quite simply starting up an EC2 instance running nginx is one option but you've got a bit more to manage in the long
    run compared to containerised approaches. For example managing the machine image it's running on in terms of
    libraries and kernel updates to the OS. Between Kubernetes and other proprietary container orchestration you've got
-   easy alternatives.
+   easy alternatives but requires know-how in your team to support it.
 
 
    
