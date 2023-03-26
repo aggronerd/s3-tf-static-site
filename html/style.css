@@ -1,0 +1,28 @@
+body {
+    background: aliceblue;
+}
+
+.standout {
+    margin: 0 10% 0 10%;
+    border: 2px solid #b3b3b3;
+    border-radius: 10pt;
+    background: white;
+    padding: 120pt 10pt 120pt 10pt;
+    background-image: url("images/bg.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.footnotes {
+    font-size: smaller;
+    margin-top: 20pt;
+    text-align: center;
+}
+
+.faded-note {
+    font-size: smaller;
+}
+
+h1 {
+    text-align: center;
+}
